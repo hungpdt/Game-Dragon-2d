@@ -20,15 +20,17 @@ public class SelectionArrow : MonoBehaviour
     }
     private void Update()
     {
+        #if UNITY_ANDROID
         //Change the position of the selection arrow
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-            ChangePosition(-1);
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-            ChangePosition(1);
+            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                ChangePosition(-1);
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+                ChangePosition(1);
 
-        //Interact with current option
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.E))
-            Interact();
+            //Interact with current option
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.E))
+                Interact();
+        #endif
     }
 
     private void ChangePosition(int _change)
