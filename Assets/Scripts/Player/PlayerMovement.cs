@@ -31,6 +31,10 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpCooldown;
     private float horizontalInput;
 
+    private bool isLeft;
+    private bool isRight;
+    private bool isUp;
+
     private void Awake()
     {
         //Grab references for rigidbody and animator from object
@@ -42,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
-
         //Flip player when moving left-right
         if (horizontalInput > 0.01f)
             transform.localScale = Vector3.one;
@@ -53,8 +56,18 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("run", horizontalInput != 0);
         anim.SetBool("grounded", isGrounded());
 
+        if(isLeft){
+            //anim.SetBool("run", true);
+            transform.Translate(-Vector2.right * speed * Time.deltaTime);
+        }
+
+        if(isRight){
+            //anim.SetBool("run", true);
+            transform.Translate(Vector2.right * speed * Time.deltaTime);
+        }
+    
         //Jump
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || isUp)
             Jump();
 
         //Adjustable jump height
@@ -81,6 +94,22 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void LeftButton(){
+        isLeft = true;
+        isRight = false;
+    }
+
+    public void RightButton(){
+        isLeft = false;
+        isRight = true;
+        isUp = false;
+    }
+
+    public void UpButton(){
+        isLeft = false;
+        isRight = false;
+        isUp = true;
+    }
     private void Jump()
     {
         if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return; 
