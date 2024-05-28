@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isLeft;
     private bool isRight;
     private bool isUp;
+    private bool jumpRequest;
 
     private void Awake()
     {
@@ -45,33 +46,44 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+    #if UNITY_EDITOR
         horizontalInput = Input.GetAxis("Horizontal");
         //Flip player when moving left-right
         if (horizontalInput > 0.01f)
             transform.localScale = Vector3.one;
         else if (horizontalInput < -0.01f)
             transform.localScale = new Vector3(-1, 1, 1);
+    #endif
 
         //Set animator parameters
         anim.SetBool("run", horizontalInput != 0);
         anim.SetBool("grounded", isGrounded());
 
         if(isLeft){
-            //anim.SetBool("run", true);
+            anim.SetBool("run", true);
             transform.Translate(-Vector2.right * speed * Time.deltaTime);
+            transform.localScale = new Vector3(-1, 1, 1);
         }
 
         if(isRight){
-            //anim.SetBool("run", true);
+            anim.SetBool("run", true);
             transform.Translate(Vector2.right * speed * Time.deltaTime);
+            transform.localScale = Vector3.one;
         }
     
         //Jump
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || isUp)
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) || (isUp && jumpRequest)){
+            anim.SetBool("run", false);
             Jump();
+            jumpRequest = false;
+        }
 
         //Adjustable jump height
-        if (Input.GetKeyUp(KeyCode.Space) && body.velocity.y > 0)
+        #if UNITY_EDITOR
+            if (Input.GetKeyUp(KeyCode.Space) && body.velocity.y > 0)
+        #elif UNITY_ANDROID
+            if (isUp && jumpRequest && body.velocity.y > 0)
+        #endif
             body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2);
 
         if (onWall())
@@ -94,21 +106,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void LeftButton(){
+    public void LeftButtonDown(){
         isLeft = true;
         isRight = false;
     }
 
-    public void RightButton(){
+    public void RightButtonDown(){
         isLeft = false;
         isRight = true;
-        isUp = false;
     }
 
     public void UpButton(){
-        isLeft = false;
         isRight = false;
+        isLeft = false;
+    }
+
+    public void JumpButton(){
         isUp = true;
+        jumpRequest = true;
     }
     private void Jump()
     {
@@ -121,8 +136,10 @@ public class PlayerMovement : MonoBehaviour
             WallJump();
         else
         {
-            if (isGrounded())
+            if (isGrounded()){
+                print("body.velocity");
                 body.velocity = new Vector2(body.velocity.x, jumpPower);
+            }
             else
             {
                 //If not on the ground and coyote counter bigger than 0 do a normal jump

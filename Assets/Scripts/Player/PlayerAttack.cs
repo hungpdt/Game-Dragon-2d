@@ -9,6 +9,8 @@ public class PlayerAttack : MonoBehaviour
 
     private Animator anim;
     private PlayerMovement playerMovement;
+    
+    private bool isAttack;
     private float cooldownTimer = Mathf.Infinity;
 
     private void Awake()
@@ -19,13 +21,18 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
-        if ((Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.Space)) && cooldownTimer > attackCooldown && playerMovement.canAttack()
-            && Time.timeScale > 0)
+        if ( (isAttack || Input.GetKeyDown(KeyCode.Space)) && cooldownTimer > attackCooldown 
+            && playerMovement.canAttack()&& Time.timeScale > 0){
             Attack();
-
+            isAttack = false;
+        }
         cooldownTimer += Time.deltaTime;
     }
 
+    public void AttackButton(){
+        isAttack = true;
+        print("isAttack = true");
+    }
     private void Attack()
     {
         SoundManager.instance.PlaySound(fireballSound);
