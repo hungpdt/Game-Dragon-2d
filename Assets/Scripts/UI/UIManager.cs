@@ -7,6 +7,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private AudioClip gameOverSound;
 
+    [Header ("Movement UI")]
+    [SerializeField] private GameObject movementUI;
+
     [Header("Pause")]
     [SerializeField] private GameObject pauseScreen;
 
@@ -59,15 +62,26 @@ public class UIManager : MonoBehaviour
     public void PauseGame(bool status)
     {
         //If status == true pause | if status == false unpause
+        //print("set active");
         pauseScreen.SetActive(status);
-
         //When pause status is true change timescale to 0 (time stops)
         //when it's false change it back to 1 (time goes by normally)
-        if (status)
+        if (status){
+            movementUI.SetActive(false);
             Time.timeScale = 0;
-        else
+        }
+        else{
+            movementUI.SetActive(true);
             Time.timeScale = 1;
+        }
     }
+
+     public void PauseGameButton()
+    {
+        print("PauseGameButton");
+        PauseGame(true);
+    }
+
     public void SoundVolume()
     {
         SoundManager.instance.ChangeSoundVolume(0.2f);

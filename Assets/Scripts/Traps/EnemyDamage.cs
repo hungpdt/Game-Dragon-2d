@@ -6,6 +6,7 @@ public class EnemyDamage : MonoBehaviour
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
+        //print("[EnemyDamage] OnTriggerEnter2D ");
         if (collision.tag == "Player")
             collision.GetComponent<Health>()?.TakeDamage(damage);
     }

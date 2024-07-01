@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Wall Jumping")]
     [SerializeField] private float wallJumpX; //Horizontal wall jump force
     [SerializeField] private float wallJumpY; //Vertical wall jump force
+    //[SerializeField] private float wallSlidingSpeed;
+    [SerializeField] private float gravityWhenSliding; 
 
     [Header("Layers")]
     [SerializeField] private LayerMask groundLayer;
@@ -30,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     private BoxCollider2D boxCollider;
     private float wallJumpCooldown;
     private float horizontalInput;
+
+    public Room currentRoom{get; set;}
 
     private bool isLeft;
     private bool isRight;
@@ -88,7 +92,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (onWall())
         {
-            body.gravityScale = 0;
+            body.gravityScale = gravityWhenSliding;
+            //body.velocity = new Vector2(body.velocity.x, Mathf.Clamp(body.velocity.y, -wallSlidingSpeed, float.MaxValue));
             body.velocity = Vector2.zero;
         }
         else
@@ -127,21 +132,27 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Jump()
     {
-        if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0) return; 
+        if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0){
+            //print("return");
+            return;
+        } 
         //If coyote counter is 0 or less and not on the wall and don't have any extra jumps don't do anything
 
         SoundManager.instance.PlaySound(jumpSound);
 
-        if (onWall())
+        if (onWall()){
+            //print("wall jump");
             WallJump();
+        }
         else
         {
             if (isGrounded()){
-                print("body.velocity");
+                //print("isGrounded");
                 body.velocity = new Vector2(body.velocity.x, jumpPower);
             }
             else
             {
+                //print("coyote");
                 //If not on the ground and coyote counter bigger than 0 do a normal jump
                 if (coyoteCounter > 0)
                     body.velocity = new Vector2(body.velocity.x, jumpPower);
@@ -163,6 +174,8 @@ public class PlayerMovement : MonoBehaviour
     private void WallJump()
     {
         body.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
+        //body.velocity = new Vector2(body.velocity.x, Mathf.Clamp(body.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        print("velocity.x =" + body.velocity.x + " velocity.y" + body.velocity.y);
         wallJumpCooldown = 0;
     }
 

@@ -20,7 +20,6 @@ public class SelectionArrow : MonoBehaviour
     }
     private void Update()
     {
-        #if UNITY_ANDROID
         //Change the position of the selection arrow
             if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                 ChangePosition(-1);
@@ -30,13 +29,11 @@ public class SelectionArrow : MonoBehaviour
             //Interact with current option
             if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.E))
                 Interact();
-        #endif
     }
 
     private void ChangePosition(int _change)
     {
         currentPosition += _change;
-
         if (_change != 0)
             SoundManager.instance.PlaySound(changeSound);
 

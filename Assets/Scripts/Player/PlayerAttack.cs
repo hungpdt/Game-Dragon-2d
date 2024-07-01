@@ -31,7 +31,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void AttackButton(){
         isAttack = true;
-        print("isAttack = true");
+        //print("isAttack = true");
     }
     private void Attack()
     {

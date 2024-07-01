@@ -30,23 +30,31 @@ public class EnemyProjectile : EnemyDamage
         transform.Translate(movementSpeed, 0, 0);
 
         lifetime += Time.deltaTime;
-        if (lifetime > resetTime)
+        if (lifetime > resetTime){
             gameObject.SetActive(false);
+            Debug.Log("projectile ", gameObject );
+        }
+           
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //print("[EnemyProjecttile] OnTriggerEnter2D ");
         hit = true;
         base.OnTriggerEnter2D(collision); //Execute logic from parent script first
         coll.enabled = false;
 
-        if (anim != null)
+        if (anim != null){
+            //print("[EnemyProjecttile] trigger ani 'explode' ");
             anim.SetTrigger("explode"); //When the object is a fireball explode it
-        else
+        }else{
+            //print("[EnemyProjecttile] SetActive false ");
             gameObject.SetActive(false); //When this hits any object deactivate arrow
+        }
     }
     private void Deactivate()
     {
+        Debug.Log("********** setactive false gameobject" + gameObject.name );
         gameObject.SetActive(false);
     }
 }

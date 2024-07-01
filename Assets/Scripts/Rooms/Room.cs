@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -28,6 +29,7 @@ public class Room : MonoBehaviour
             {
                 enemies[i].SetActive(_status);
                 enemies[i].transform.position = initialPosition[i];
+                Debug.Log("Setactive = "+_status + " enemy " + enemies[i].name);
             }
         }
     }

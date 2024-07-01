@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Health : MonoBehaviour
 {
+    public static event Action<Health> OnEnemyDied;
     [Header ("Health")]
     [SerializeField] private float startingHealth;
     public float currentHealth { get; private set; }
@@ -30,11 +32,15 @@ public class Health : MonoBehaviour
     }
     public void TakeDamage(float _damage)
     {
+        print("[Health] invulneralbe " + invulnerable);
         if (invulnerable) return;
+
+         print("[Health] currentHealth =" + currentHealth);
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
         if (currentHealth > 0)
         {
+            print("[Health] currentHealth > 0");
             anim.SetTrigger("hurt");
             StartCoroutine(Invunerability());
             SoundManager.instance.PlaySound(hurtSound);
@@ -43,6 +49,7 @@ public class Health : MonoBehaviour
         {
             if (!dead)
             {
+                print("[Health] Deactivate all attached component classes");
                 //Deactivate all attached component classes
                 foreach (Behaviour component in components)
                     component.enabled = false;
@@ -52,6 +59,7 @@ public class Health : MonoBehaviour
 
                 dead = true;
                 SoundManager.instance.PlaySound(deathSound);
+                OnEnemyDied?.Invoke(this);
             }
         }
     }
@@ -81,6 +89,7 @@ public class Health : MonoBehaviour
     //Respawn
     public void Respawn()
     {
+        print("[Health] Respaw");
         AddHealth(startingHealth);
         anim.ResetTrigger("die");
         anim.Play("Idle");
