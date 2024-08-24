@@ -27,10 +27,13 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("collision.tag: " + collision.tag);
+        if(collision.tag == "CameraBound") return;
+
         hit = true;
         boxCollider.enabled = false;
         anim.SetTrigger("explode");
-
+        
         if (collision.tag == "Enemy")
             collision.GetComponent<Health>()?.TakeDamage(1);
     }

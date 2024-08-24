@@ -3,20 +3,23 @@ using UnityEngine;
 public class PlayerRespawn : MonoBehaviour
 {
     [SerializeField] private AudioClip checkpoint;
-    private Transform currentCheckpoint;
+    [SerializeField] private Transform currentCheckpoint = null;
     private Health playerHealth;
     private UIManager uiManager;
 
     private void Awake()
     {
+        Debug.Log("Initial Checkpoint: " + currentCheckpoint);
         playerHealth = GetComponent<Health>();
         uiManager = FindObjectOfType<UIManager>();
     }
 
     public void RespawnCheck()
     {
+        Debug.Log("Checkpoint before check: " + currentCheckpoint);
         if (currentCheckpoint == null) 
         {
+            print(" GameOver() ");
             uiManager.GameOver();
             return;
         }
@@ -25,7 +28,7 @@ public class PlayerRespawn : MonoBehaviour
         transform.position = currentCheckpoint.position; //Move player to checkpoint location
 
         //Move the camera to the checkpoint's room
-        Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckpoint.parent);
+        //Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckpoint.parent);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

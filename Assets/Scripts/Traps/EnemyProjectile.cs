@@ -39,16 +39,17 @@ public class EnemyProjectile : EnemyDamage
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //print("[EnemyProjecttile] OnTriggerEnter2D ");
+        if(collision.tag == "CameraBound") return;
+
         hit = true;
         base.OnTriggerEnter2D(collision); //Execute logic from parent script first
         coll.enabled = false;
 
         if (anim != null){
-            //print("[EnemyProjecttile] trigger ani 'explode' ");
+            print("[EnemyProjecttile] trigger ani 'explode' ");
             anim.SetTrigger("explode"); //When the object is a fireball explode it
         }else{
-            //print("[EnemyProjecttile] SetActive false ");
+            print("[EnemyProjecttile] SetActive false ");
             gameObject.SetActive(false); //When this hits any object deactivate arrow
         }
     }

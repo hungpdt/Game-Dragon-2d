@@ -32,15 +32,15 @@ public class Health : MonoBehaviour
     }
     public void TakeDamage(float _damage)
     {
-        print("[Health] invulneralbe " + invulnerable);
+        //print("[Health] invulneralbe " + invulnerable);
         if (invulnerable) return;
 
-         print("[Health] currentHealth =" + currentHealth);
+        //print("[Health] currentHealth =" + currentHealth);
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
         if (currentHealth > 0)
         {
-            print("[Health] currentHealth > 0");
+            //print("[Health] currentHealth > 0");
             anim.SetTrigger("hurt");
             StartCoroutine(Invunerability());
             SoundManager.instance.PlaySound(hurtSound);
@@ -49,7 +49,7 @@ public class Health : MonoBehaviour
         {
             if (!dead)
             {
-                print("[Health] Deactivate all attached component classes");
+                //print("[Health] Deactivate all attached component classes");
                 //Deactivate all attached component classes
                 foreach (Behaviour component in components)
                     component.enabled = false;
@@ -89,10 +89,11 @@ public class Health : MonoBehaviour
     //Respawn
     public void Respawn()
     {
-        print("[Health] Respaw");
+        //print("[Health] Respaw");
         AddHealth(startingHealth);
         anim.ResetTrigger("die");
-        anim.Play("Idle");
+        //anim.Play("Idle");
+        anim.Play("Knight_idle");
         StartCoroutine(Invunerability());
         dead = false;
 
