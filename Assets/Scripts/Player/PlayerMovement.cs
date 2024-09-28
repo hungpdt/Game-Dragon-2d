@@ -60,9 +60,16 @@ public class PlayerMovement : MonoBehaviour
     private bool isUp;
     private bool jumpRequest;
     private PlayerStateList playerStateList;
+    public static PlayerMovement Instance;
+    private Health playerHealth;
 
     private void Awake()
     {
+        if(Instance != null && Instance != this){
+            Destroy(Instance);
+        }else{
+            Instance = this;
+        }
         //Grab references for rigidbody and animator from object
         playerStateList = GetComponent<PlayerStateList>();
         body = GetComponent<Rigidbody2D>();
