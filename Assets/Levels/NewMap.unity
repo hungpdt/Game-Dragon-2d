@@ -9909,6 +9909,73 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 345423133}
   m_SourcePrefab: {fileID: 100100000, guid: 6ef097aaca1c23643a506c6c573d6826, type: 3}
+--- !u!1 &620192697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 620192698}
+  - component: {fileID: 620192699}
+  m_Layer: 11
+  m_Name: Diving Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &620192698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620192697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.99, y: -11.16, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1217412077}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &620192699
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620192697}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.38
 --- !u!1 &633101452
 GameObject:
   m_ObjectHideFlags: 0
@@ -12114,7 +12181,6 @@ GameObject:
   - component: {fileID: 1217412073}
   - component: {fileID: 1217412072}
   - component: {fileID: 1217412078}
-  - component: {fileID: 1217412079}
   m_Layer: 11
   m_Name: THK Handler
   m_TagString: Enemy
@@ -12377,6 +12443,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 260378802}
+  - {fileID: 620192698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1217412078
@@ -12392,37 +12459,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  speed: 7
+  speed: 4
+  range: 2.84
+  damage: 2
+  colliderDistance: 0.79
+  boxCollider: {fileID: 1217412076}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
   groundCheckPoint: {fileID: 0}
   groundCheckY: 0.2
   groundCheckX: 0.5
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  slashEffect: {fileID: 0}
-  attackRange: 5
-  attackTimer: 5
+  attackTimer: 3
+  facingRight: 0
   runSpeed: 0
   attacking: 0
   attackCountdown: 0
---- !u!114 &1217412079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217412071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e26f534ea637349a0bc6f44b578ba9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingHealth: 10
-  iFramesDuration: 0
-  numberOfFlashes: 0
-  components: []
-  deathSound: {fileID: 0}
-  hurtSound: {fileID: 0}
+  isDamagedPlayer: 0
+  parrying: 0
+  moveToPosition: {x: 0, y: 0}
+  diveAttack: 0
+  divingCollider: {fileID: 0}
+  pillar: {fileID: 0}
 --- !u!1 &1221059656
 GameObject:
   m_ObjectHideFlags: 0

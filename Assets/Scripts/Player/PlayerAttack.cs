@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviour
 
     private Animator anim;
     private PlayerMovement playerMovement;
-    private Health enemyHealth;
+    //private EnemyGetHit enemyHealth;
     
     private bool isAttack;
     private float cooldownTimer = Mathf.Infinity;
@@ -49,7 +49,7 @@ public class PlayerAttack : MonoBehaviour
         cooldownTimer += Time.deltaTime;
 
         if(Input.GetMouseButtonDown(0)){
-            Debug.Log("melee attack");
+            //Debug.Log("melee attack");
             MeleeAttackButton();
             MeleeAttack();
         }
@@ -69,16 +69,16 @@ public class PlayerAttack : MonoBehaviour
             new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
             0, Vector2.left, 0, enemyLayer);
 
-        if (hit.collider != null){
-            enemyHealth = hit.transform.GetComponent<Health>();
-        }
+        //if (hit.collider != null){
+        //    enemyHealth = hit.transform.GetComponent<Enemy>();
+        //}
 
         return hit.collider != null;
     }
 
-    private void DamageEnemy(){
+    public void DamageEnemy(){
         if(EnemyInSight()){
-            enemyHealth.TakeDamage(damage);
+            TheHollowKnight.Instance.EnemyGetHit(damage);
         }
     }
     public void AttackButton(){
@@ -93,7 +93,7 @@ public class PlayerAttack : MonoBehaviour
         timeSinceAttack += Time.deltaTime;
 
         if(meleeAttack && timeSinceAttack >= timeBetweenAttack){
-            Debug.Log("set trigger melee attack");
+            //Debug.Log("set trigger melee attack");
             anim.SetTrigger("melee_attack");
             timeSinceAttack = 0;
         }

@@ -9,7 +9,7 @@ public class PlayerRespawn : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Initial Checkpoint: " + currentCheckpoint);
+        //Debug.Log("Initial Checkpoint: " + currentCheckpoint);
         playerHealth = GetComponent<Health>();
         uiManager = FindObjectOfType<UIManager>();
     }
