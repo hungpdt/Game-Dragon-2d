@@ -14,19 +14,19 @@ public class OpenDoor : MonoBehaviour
 
     private void OnEnable() {
         //print("OnEnable opendoor");
-        Health.OnEnemyDied += OnEnemyDied;
+        HealthPlayer.OnEnemyDied += OnEnemyDied;
         
     }
 
     private void OnDisable() {
         //print("OnDisable opendoor");
-        Health.OnEnemyDied -= OnEnemyDied;
+        HealthPlayer.OnEnemyDied -= OnEnemyDied;
     }
 
-    public void OnEnemyDied(Health enemyHeal){
+    public void OnEnemyDied(HealthPlayer enemyHeal){
         foreach(GameObject e in enemies){
             //if(e.GetComponent<Health>() == enemyHeal){
-            if(e.GetComponentInChildren<Health>() == enemyHeal){
+            if(e.GetComponentInChildren<HealthPlayer>() == enemyHeal){
                 aliveEnemyCount--;
                 if(aliveEnemyCount <= 0)
                     gameObject.SetActive(false);

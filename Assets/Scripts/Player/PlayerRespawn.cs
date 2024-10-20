@@ -4,13 +4,13 @@ public class PlayerRespawn : MonoBehaviour
 {
     [SerializeField] private AudioClip checkpoint;
     [SerializeField] private Transform currentCheckpoint = null;
-    private Health playerHealth;
+    private HealthPlayer playerHealth;
     private UIManager uiManager;
 
     private void Awake()
     {
         //Debug.Log("Initial Checkpoint: " + currentCheckpoint);
-        playerHealth = GetComponent<Health>();
+        playerHealth = GetComponent<HealthPlayer>();
         uiManager = FindObjectOfType<UIManager>();
     }
 

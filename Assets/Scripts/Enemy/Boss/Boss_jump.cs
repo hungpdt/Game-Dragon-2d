@@ -8,7 +8,7 @@ public class Boss_jump : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        rigidbody2D = animator.GetComponentInParent<Rigidbody2D>();
+        rigidbody2D = animator.GetComponent<Rigidbody2D>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,7 +23,7 @@ public class Boss_jump : StateMachineBehaviour
         {
             TheHollowKnight.Instance.Flip();
             Vector2 _newPos = Vector2.MoveTowards(rigidbody2D.position, TheHollowKnight.Instance.moveToPosition,
-                TheHollowKnight.Instance.speed * 3 * Time.fixedDeltaTime);
+                TheHollowKnight.Instance.speed * 3.5f * Time.fixedDeltaTime);
 
             rigidbody2D.MovePosition(_newPos);
 
@@ -39,16 +39,4 @@ public class Boss_jump : StateMachineBehaviour
     {
 
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

@@ -43,16 +43,18 @@ public class PlayerAttack : MonoBehaviour
     {
         if ( (isAttack || Input.GetKeyDown(KeyCode.Space)) && cooldownTimer > attackCooldown 
             && playerMovement.canAttack()&& Time.timeScale > 0){
-            RangeAttack();
+            //RangeAttack();
+            MeleeAttackButton();
+            MeleeAttack();
             isAttack = false;
         }
         cooldownTimer += Time.deltaTime;
 
-        if(Input.GetMouseButtonDown(0)){
-            //Debug.Log("melee attack");
-            MeleeAttackButton();
-            MeleeAttack();
-        }
+        //if(isAttack){
+        //    //Debug.Log("melee attack");
+        //    MeleeAttackButton();
+        //    MeleeAttack();
+        //}
     }
 
     private void OnDrawGizmos()
@@ -68,10 +70,6 @@ public class PlayerAttack : MonoBehaviour
             Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
             new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
             0, Vector2.left, 0, enemyLayer);
-
-        //if (hit.collider != null){
-        //    enemyHealth = hit.transform.GetComponent<Enemy>();
-        //}
 
         return hit.collider != null;
     }

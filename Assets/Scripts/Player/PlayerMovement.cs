@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] private AudioClip jumpSound;
 
-    private Rigidbody2D body;
+    private Rigidbody2D rigiBody2dPlayer;
     private Animator anim;
     private BoxCollider2D boxCollider;
     private float wallJumpCooldown;
@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpRequest;
     private PlayerStateList playerStateList;
     public static PlayerMovement Instance;
-    private Health playerHealth;
+    private HealthPlayer playerHealth;
 
     private void Awake()
     {
@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         }
         //Grab references for rigidbody and animator from object
         playerStateList = GetComponent<PlayerStateList>();
-        body = GetComponent<Rigidbody2D>();
+        rigiBody2dPlayer = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
     }
@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
         //Dash
         if (playerStateList.dash)
         {
-            Debug.Log("playerStateList.dash = true ");
+            //Debug.Log("playerStateList.dash = true ");
             return;
         }
 
@@ -117,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
             anim?.SetBool("run", false);
             
             if (coyoteCounter <= 0 && !onWall() && jumpCounter <= 0){
-                //print("return");
+                //Debug.Log(" ========= return ===========");
                 return;
             } 
             //If coyote counter is 0 or less and not on the wall and don't have any extra jumps don't do anything
@@ -133,19 +133,19 @@ public class PlayerMovement : MonoBehaviour
                 playerStateList.jump = true;
                 if (isGrounded()){
                     //print("isGrounded");
-                    body.velocity = new Vector2(body.velocity.x, jumpPower);
+                    rigiBody2dPlayer.velocity = new Vector2(rigiBody2dPlayer.velocity.x, jumpPower);
                 }
                 else
                 {
                     //print("coyote");
                     //If not on the ground and coyote counter bigger than 0 do a normal jump
                     if (coyoteCounter > 0)
-                        body.velocity = new Vector2(body.velocity.x, jumpPower);
+                        rigiBody2dPlayer.velocity = new Vector2(rigiBody2dPlayer.velocity.x, jumpPower);
                     else
                     {
                         if (jumpCounter > 0) //If we have extra jumps then jump and decrease the jump counter
                         {
-                            body.velocity = new Vector2(body.velocity.x, jumpPower);
+                            rigiBody2dPlayer.velocity = new Vector2(rigiBody2dPlayer.velocity.x, jumpPower);
                             jumpCounter--;
                         }
                     }
@@ -159,22 +159,22 @@ public class PlayerMovement : MonoBehaviour
 
         //Adjustable jump height
 #if UNITY_EDITOR
-        if (Input.GetKeyUp(KeyCode.Space) && body.velocity.y > 0)
+        if (Input.GetKeyUp(KeyCode.Space) && rigiBody2dPlayer.velocity.y > 0)
 #elif UNITY_ANDROID
             if (isUp && jumpRequest && body.velocity.y > 0)
 #endif
-            body.velocity = new Vector2(body.velocity.x, body.velocity.y / 2);
+            rigiBody2dPlayer.velocity = new Vector2(rigiBody2dPlayer.velocity.x, rigiBody2dPlayer.velocity.y / 2);
 
         if (onWall())
         {
-            body.gravityScale = gravityWhenSliding;
+            rigiBody2dPlayer.gravityScale = gravityWhenSliding;
             //body.velocity = new Vector2(body.velocity.x, Mathf.Clamp(body.velocity.y, -wallSlidingSpeed, float.MaxValue));
-            body.velocity = Vector2.zero;
+            rigiBody2dPlayer.velocity = Vector2.zero;
         }
         else
         {
-            body.gravityScale = gravity;
-            body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+            rigiBody2dPlayer.gravityScale = gravity;
+            rigiBody2dPlayer.velocity = new Vector2(horizontalInput * speed, rigiBody2dPlayer.velocity.y);
 
             if (isGrounded())
             {
@@ -199,10 +199,11 @@ public class PlayerMovement : MonoBehaviour
     }
     private void GetInput()  {
         horizontalInput = Input.GetAxis("Horizontal");
+        //Debug.Log("horizontal input = "+ horizontalInput);
     }
     private void StartDash(){
         if(Input.GetKeyDown(KeyCode.F) && canDash && !dashed){
-            Debug.Log("StartDash ");
+            //Debug.Log("StartDash ");
             StartCoroutine(Dash());
             dashed = true;
         }
@@ -216,14 +217,14 @@ public class PlayerMovement : MonoBehaviour
         canDash = false;
         playerStateList.dash = true;
         anim.SetTrigger("dash");
-        body.gravityScale = 0;
-        body.velocity = new Vector2(transform.localScale.x * dashSpeed, 0);
+        rigiBody2dPlayer.gravityScale = 0;
+        rigiBody2dPlayer.velocity = new Vector2(transform.localScale.x * dashSpeed, 0);
         if(isGrounded()){
             Instantiate(dashAnimation, transform);
         }
         yield return new WaitForSeconds(dashTime);
         playerStateList.dash = false;
-        body.gravityScale = gravity;
+        rigiBody2dPlayer.gravityScale = gravity;
 
         yield return new WaitForSeconds(dashCoolDown);
         canDash = true;
@@ -241,6 +242,8 @@ public class PlayerMovement : MonoBehaviour
     public void UpButton(){
         isRight = false;
         isLeft = false;
+        isUp = false;
+        jumpRequest = false;
     }
 
     public void JumpButton(){
@@ -250,9 +253,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallJump()
     {
-        body.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
+        rigiBody2dPlayer.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpX, wallJumpY));
         //body.velocity = new Vector2(body.velocity.x, Mathf.Clamp(body.velocity.y, -wallSlidingSpeed, float.MaxValue));
-        print("velocity.x =" + body.velocity.x + " velocity.y" + body.velocity.y);
+        print("velocity.x =" + rigiBody2dPlayer.velocity.x + " velocity.y" + rigiBody2dPlayer.velocity.y);
         wallJumpCooldown = 0;
     }
 

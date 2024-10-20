@@ -5,13 +5,11 @@ using UnityEngine;
 public class Boss_Idle : StateMachineBehaviour
 {
     Rigidbody2D rigidbody2D;
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        rigidbody2D = animator.GetComponentInParent<Rigidbody2D>();
+        rigidbody2D = animator.GetComponent<Rigidbody2D>();
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
        rigidbody2D.velocity = Vector2.zero;
@@ -19,7 +17,8 @@ public class Boss_Idle : StateMachineBehaviour
        if(TheHollowKnight.Instance.attackCountdown <= 0)
        {
             TheHollowKnight.Instance.AttackHandler();
-            TheHollowKnight.Instance.attackCountdown = TheHollowKnight.Instance.attackTimer;
+            TheHollowKnight.Instance.attackCountdown = Random.Range(TheHollowKnight.Instance.attackTimer - 1,
+                TheHollowKnight.Instance.attackTimer + 1);
        }
     }
 
@@ -35,16 +34,4 @@ public class Boss_Idle : StateMachineBehaviour
     {
        
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

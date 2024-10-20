@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class Health : MonoBehaviour
+public class HealthPlayer : MonoBehaviour
 {
-    public static event Action<Health> OnEnemyDied;
+    public static event Action<HealthPlayer> OnEnemyDied;
     [Header ("Health")]
     [SerializeField] private float startingHealth;
     public float currentHealth { get; private set; }
@@ -30,7 +30,7 @@ public class Health : MonoBehaviour
         anim = GetComponent<Animator>();
         spriteRend = GetComponent<SpriteRenderer>();
     }
-    public void TakeDamage(float _damage)
+    public void TakeDamagePlayer(float _damage)
     {
         //print("[Health] invulneralbe " + invulnerable);
         if (invulnerable) return;

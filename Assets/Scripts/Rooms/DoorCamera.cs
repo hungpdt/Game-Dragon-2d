@@ -15,7 +15,7 @@ public class DoorCamera : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             lastPlayerPosition = collision.transform.position;
             isPlayerInTrigger = true;
@@ -24,7 +24,7 @@ public class DoorCamera : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && isPlayerInTrigger)
+        if (collision.CompareTag("Player") && isPlayerInTrigger)
         {
             Vector3 currentPlayerPosition = collision.transform.position;
 
@@ -48,7 +48,7 @@ public class DoorCamera : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             isPlayerInTrigger = false;
         }

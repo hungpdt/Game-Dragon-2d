@@ -5,11 +5,11 @@ using UnityEngine;
 public class Boss_Lunge : StateMachineBehaviour
 {
     Rigidbody2D rigibody2D;
-    Health playerHealth;
+    HealthPlayer playerHealth;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        rigibody2D = animator.GetComponentInParent<Rigidbody2D>();
+        rigibody2D = animator.GetComponent<Rigidbody2D>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -21,8 +21,9 @@ public class Boss_Lunge : StateMachineBehaviour
         if(Vector2.Distance(PlayerMovement.Instance.transform.position, rigibody2D.position) <= TheHollowKnight.Instance.GetAttackRange() 
             && !TheHollowKnight.Instance.isDamagedPlayer)
         {
-            playerHealth.TakeDamage(TheHollowKnight.Instance.GetDamage());
+            TheHollowKnight.Instance.DamagePlayer(TheHollowKnight.Instance.GetDamageLunge());
             TheHollowKnight.Instance.isDamagedPlayer = true;
+            rigibody2D.gravityScale = 5;
         } 
     }
 
@@ -31,16 +32,4 @@ public class Boss_Lunge : StateMachineBehaviour
     {
 
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

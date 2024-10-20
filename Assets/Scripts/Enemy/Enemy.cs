@@ -5,12 +5,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float health;
     [SerializeField] public float speed;
     protected SpriteRenderer spriteRenderer;
-    protected Rigidbody2D rigiBody2d;
+    [HideInInspector] public Rigidbody2D rigiBody2d;
     protected Animator animator;
     [SerializeField] protected float range;
     [SerializeField] protected float damage;
+    //[SerializeField] protected float gravity;
 
-    private Health playerHealth;
+    private HealthPlayer playerHealth;
 
     [Header("Collider Parameters")]
     [SerializeField] private float colliderDistance;
@@ -20,9 +21,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
 
     [Header("Ground Check settings")]
-    [SerializeField] protected Transform groundCheckPoint;
-    [SerializeField] private float groundCheckY = 0.2f;
-    [SerializeField] private float groundCheckX = 0.5f;
+    [SerializeField] public Transform groundCheckPoint;
+    [SerializeField] protected float groundCheckY = 0.2f;
+    [SerializeField] protected float groundCheckX = 0.5f;
     [SerializeField] public LayerMask groundLayer;
     protected EnemyStates currentEnemyState;
 
@@ -96,29 +97,29 @@ public class Enemy : MonoBehaviour
                                         0, Vector2.left, 0, playerLayer);
 
         if (hit.collider != null)
-            playerHealth = hit.transform.GetComponent<Health>();
+            playerHealth = hit.transform.GetComponent<HealthPlayer>();
 
         return hit.collider != null;
     }
 
-    protected void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
             new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z));
     }
 
-    protected void DamagePlayer()
+    public void DamagePlayer(float _damage = 1)
     {
         if (PlayerInSight())
-            playerHealth.TakeDamage(damage);
+            playerHealth.TakeDamagePlayer(_damage);
     }
 
     public virtual void EnemyGetHit(float _damageDone, float _hitforce = 0)
     {
         health -= _damageDone;
-        Debug.Log("health = "+ health);
-        // spawn blood enemy when gets hit
+        Debug.Log("health enemy = "+ health);
+        //spawn blood enemy when gets hit
         //GameObject _orangeBlood = Instantiate(orangeBlood, transform.position, Quaternion.identity);
         //Destroy(_orangeBlood, 5.5f);
     }
